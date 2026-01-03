@@ -23,7 +23,7 @@ export default function Home() {
           contents={
             <>
               <TabsContent value="home">Home</TabsContent>
-              <TabsContent value="receiveHistory">
+              <TabsContent forceMount={true} value="receiveHistory">
                 <TransferEventList />
               </TabsContent>
             </>
