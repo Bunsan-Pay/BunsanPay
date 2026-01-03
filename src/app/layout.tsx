@@ -4,10 +4,11 @@ import { ThemeProvider } from "@/components/theme-provider"
 
 import './globals.css';
 import ContextProvider from '@/context'
+import JpycAddressProvider from "@/context/jpyc-address";
 
 export const metadata: Metadata = {
-  title: "AppKit in Next.js + wagmi",
-  description: "AppKit example dApp",
+  title: "ぶんさんPay",
+  description: "JPYCを活用した日本のブロックチェーン決済や利用を促進するためのwebアプリ",
 };
 
 export default function RootLayout({
@@ -16,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="ja" suppressHydrationWarning>
       <head />
       <body>
         <ThemeProvider
@@ -25,7 +26,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ContextProvider>{children}</ContextProvider>
+          <ContextProvider>
+            <JpycAddressProvider>
+              {children}
+            </JpycAddressProvider>
+          </ContextProvider>
         </ThemeProvider>
       </body>
     </html>

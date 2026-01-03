@@ -1,26 +1,35 @@
+'use client'
 // import { cookieStorage, createStorage, http } from '@wagmi/core'
-import { ConnectButton } from "@/components/ConnectButton";
-import { InfoList } from "@/components/InfoList";
-import { ActionButtonList } from "@/components/ActionButtonList";
-import Image from 'next/image';
-import { ModeToggle } from "@/components/color-mode-toggle";
+import { TabModule } from "@/components/TabModule";
+import { TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import { JpycNetworks } from "@/components/JpycNetworks";
+import { TransferEventList } from "@/components/TransferEventList";
+import { Header } from "@/components/Header";
 
 export default function Home() {
-
   return (
-    <div className={"pages"}>
-      <ModeToggle />
-      <Image src="/reown.svg" alt="Reown" width={150} height={150} priority />
-      <h1>AppKit Wagmi Next.js App Router Example</h1>
-
-      <ConnectButton />
-      <ActionButtonList />
-      <div className="advice">
-        <p>
-          This projectId only works on localhost. <br />Go to <a href="https://dashboard.reown.com" target="_blank" className="link-button" rel="Reown Dashboard">Reown Dashboard</a> to get your own.
-        </p>
-      </div>
-      <InfoList />
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto]">
+      <Header />
+      <main className="p-4 min-w-0">
+        <JpycNetworks />
+        <TabModule
+          defaultValue="home"
+          triggers={
+            <>
+              <TabsTrigger value="home">Home</TabsTrigger>
+              <TabsTrigger value="receiveHistory">受取履歴</TabsTrigger>
+            </>
+          }
+          contents={
+            <>
+              <TabsContent value="home">Home</TabsContent>
+              <TabsContent value="receiveHistory">
+                <TransferEventList />
+              </TabsContent>
+            </>
+          }
+        />
+      </main>
     </div>
   );
 }
