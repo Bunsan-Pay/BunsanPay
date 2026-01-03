@@ -1,16 +1,39 @@
-# Reown AppKit Example using wagmi (next.js with App Router)
+# BunsanPay
+v0.0.1  
+ぶんさんPayは、JPYCを活用した日本のブロックチェーン決済や利用を促進するためのwebアプリです。
 
-This is a Next.js project.
+## Features
+>- [x] 実装済み
+>- [ ] 実装予定・構想中  
+- [x] JPYC受取確認  
+通常のウォレットより安全性の高い受取確認機能です。
+    - 正規トークンアドレスでフィルタリング
+    - 偽トークンによる決済の受取誤認などを防ぐ
+    - [ ] tx idで検索
+- [ ] 拡張決済(eip3009)  
+任意のメッセージを送金用署名データに含めて決済する機能です。
+    - eip3009のnonceを$H(\text{message}+\text{random})$とすることで、任意のメッセージと送金を暗号学的に紐づけ
+    - [ ] ECの商品・サービスに紐づいた決済をオンチェーンで管理
+        - [ ] 決済リンクの生成
+        - [ ] 決済リンクから送金・オンチェーン検証
+        - [ ] 決済履歴をフィルタリングして表示
+        - [ ] サーバー用APIライブラリ
+    - [ ] 投げ銭チャットなど、送金と紐付いたメッセージ機能
+        - [ ] メッセージ送信用リンク生成
+        - [ ] リンクからメッセージ送信・オンチェーン検証
+        - [ ] メッセージ履歴をフィルタリングして表示
+        - [ ] サーバー用APIライブラリ
 
-## Usage
+## Supported Network
 
-1. Go to [Reown Dashboard](https://dashboard.reown.com) and create a new project.
-2. Copy your `Project ID`
-3. Rename `.env.example` to `.env` and paste your `Project ID` as the value for `NEXT_PUBLIC_PROJECT_ID`
-4. Run `pnpm install` to install dependencies
-5. Run `pnpm run dev` to start the development server
+- Ethereum
+- Polygon
+- Avalanche
+- Sepolia
+
 
 ## Resources
 
 - [Reown — Docs](https://docs.reown.com)
-- [Next.js — Docs](https://nextjs.org/docs)
+- [Vite — GitHub](https://github.com/vitejs/vite)
+- [Vite — Docs](https://vitejs.dev/guide/)

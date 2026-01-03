@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider"
 
 
-import { headers } from 'next/headers' // added
 import './globals.css';
 import ContextProvider from '@/context'
 
@@ -10,18 +10,23 @@ export const metadata: Metadata = {
   description: "AppKit example dApp",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersData = await headers();
-  const cookies = headersData.get('cookie');
-
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body>
-        <ContextProvider cookies={cookies}>{children}</ContextProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ContextProvider>{children}</ContextProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
