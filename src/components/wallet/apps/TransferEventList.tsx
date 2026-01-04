@@ -120,7 +120,7 @@ export const TransferEventList = () => {
         refresh()
     }, [caipNetworkId])
     return (
-        <div>
+        <>
             {(!publicClient || !address) && (
                 <div>
                     <p>You must connect to a wallet</p>
@@ -128,7 +128,7 @@ export const TransferEventList = () => {
             )}
             {publicClient && address && (
                 <>
-                    <Button variant="outline" size="sm" onClick={() => refresh()}>Refresh</Button>
+                    <Button variant="outline" size="sm" onClick={() => refresh()} className="self-start">Refresh</Button>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -151,21 +151,23 @@ export const TransferEventList = () => {
                             ))}
                         </TableBody>
                     </Table>
-                    {isMore && (
-                        <>
-                            <div ref={ref} className="h-4 w-full" />
-                            <div className="flex justify-center p-4">
-                                <p>Loading...</p>
+                    <div className="flex justify-center">
+                        {isMore && (
+                            <div>
+                                <div ref={ref} className="h-4 w-full" />
+                                <div className="p-4">
+                                    <p>Loading...</p>
+                                </div>
                             </div>
-                        </>
-                    )}
-                    {!isMore && (
-                        <div className="flex justify-center p-4">
-                            <Button variant="outline" size="sm" onClick={() => { setIsMore(true) }}>More</Button>
-                        </div>
-                    )}
+                        )}
+                        {!isMore && (
+                            <div className="p-4">
+                                <Button variant="outline" size="sm" onClick={() => { setIsMore(true) }}>More</Button>
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
-        </div>
+        </>
     )
 }

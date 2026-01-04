@@ -1,10 +1,12 @@
 'use client'
 // import { cookieStorage, createStorage, http } from '@wagmi/core'
-import { TabModule } from "@/components/TabModule";
+import { TabModule } from "@/components/ui-own/TabModule";
 import { TabsContent, TabsTrigger } from "@/components/ui/tabs";
-import { JpycNetworks } from "@/components/JpycNetworks";
-import { TransferEventList } from "@/components/TransferEventList";
-import { Header } from "@/components/Header";
+import { JpycNetworks } from "@/components/wallet/JpycNetworks";
+import { TransferEventList } from "@/components/wallet/apps/TransferEventList";
+import { Header } from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { WalletInfo } from "@/components/wallet/apps/WalletInfo";
 
 export default function Home() {
   return (
@@ -22,14 +24,17 @@ export default function Home() {
           }
           contents={
             <>
-              <TabsContent value="home">Home</TabsContent>
-              <TabsContent forceMount={true} value="receiveHistory">
+              <TabsContent forceMount={true} className="w-full flex justify-center" value="home">
+                <WalletInfo />
+              </TabsContent>
+              <TabsContent forceMount={true} className="w-full self-stretch min-w-0" value="receiveHistory">
                 <TransferEventList />
               </TabsContent>
             </>
           }
         />
       </main>
+      <Footer />
     </div>
   );
 }

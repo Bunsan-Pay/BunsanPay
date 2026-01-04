@@ -1,5 +1,5 @@
-import { ModeToggle } from '@/components/color-mode-toggle'
-import { ConnectButton } from '@/components/ConnectButton'
+import { ModeToggle } from '@/components/ui-own/color-mode-toggle'
+import { ConnectButton } from '@/components/wallet/ConnectButton'
 
 export const Header = () => {
     return (

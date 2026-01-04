@@ -12,23 +12,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { useAppKitTheme } from "@reown/appkit/react"
-import { useEffect } from "react"
-
 export function ModeToggle() {
-    const { theme, setTheme } = useTheme()
-    const { setThemeMode: appKitSetThemeMode } = useAppKitTheme()
-
-    useEffect(() => {
-        if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-                .matches
-                ? "dark"
-                : "light"
-            appKitSetThemeMode(systemTheme)
-        }
-    }, [theme])
-
+    const { setTheme } = useTheme()
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -41,13 +26,11 @@ export function ModeToggle() {
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => {
                     setTheme("light")
-                    appKitSetThemeMode('light')
                 }}>
                     Light
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => {
                     setTheme("dark")
-                    appKitSetThemeMode('dark')
                 }}>
                     Dark
                 </DropdownMenuItem>

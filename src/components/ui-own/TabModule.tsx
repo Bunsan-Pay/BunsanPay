@@ -6,8 +6,8 @@ export const TabModule = ({ defaultValue, triggers, contents }: { defaultValue: 
         return contents
     }, [])
     return (
-        <Tabs defaultValue={defaultValue} className="pt-4">
-            <TabsList className="self-center">
+        <Tabs defaultValue={defaultValue} className="pt-4 items-center">
+            <TabsList>
                 {triggers}
             </TabsList>
             {contentBuffer()}
