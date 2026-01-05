@@ -31,21 +31,8 @@ export const TransferEventList = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [isMore, setIsMore] = useState<boolean>(true)
     const publicClient = usePublicClient()
-    const blockRange = useRef<bigint>(0n)
     const { ref, inView } = useInView()
 
-
-
-    const estimateBlockRange = useCallback(async (days: bigint = 7n) => {
-        if (!publicClient) return 0n
-        const currentBlock = await publicClient.getBlock()
-        const pastBlock = await publicClient.getBlock({
-            blockNumber: currentBlock.number - 1000n
-        })
-        const deltaTime = currentBlock.timestamp - pastBlock.timestamp
-        const deltaBlock = currentBlock.number - pastBlock.number
-        return (deltaTime / deltaBlock) * (days * 24n * 60n * 60n)
-    }, [publicClient])
 
     const fetch = useCallback(async () => {
         if (!publicClient) return
@@ -55,17 +42,11 @@ export const TransferEventList = () => {
             const currentBlockNumber = await publicClient.getBlockNumber()
             console.log(`fetched current block number: ${currentBlockNumber}`)
             nextBlockNumberRef.current = currentBlockNumber
-            blockRange.current = await estimateBlockRange()
             lastBlockNumberRef.current = currentBlockNumber
         }
 
         console.log(`initialized block number: ${nextBlockNumberRef.current}`)
 
-        if (lastBlockNumberRef.current - nextBlockNumberRef.current > blockRange.current!) {
-            (true)
-            setIsLoading(false)
-            return
-        }
         const fromBlockNumber = nextBlockNumberRef.current - chunkSize
         const toBlockNumber = nextBlockNumberRef.current
         nextBlockNumberRef.current = fromBlockNumber
@@ -91,24 +72,23 @@ export const TransferEventList = () => {
         setEvents(prev => [...prev, ...logs])
         console.log(`updated block number: ${nextBlockNumberRef.current}`)
         setIsLoading(false)
-    }, [publicClient, jpycAddress, address, estimateBlockRange])
+    }, [publicClient, jpycAddress, address])
 
     useEffect(() => {
         if (inView && !isLoading && isMore) {
             fetch()
         }
-    }, [inView, isLoading, isMore, , fetch])
+    }, [inView, isLoading, isMore, fetch])
 
     const refresh = useCallback(() => {
         setEvents([])
         lastBlockNumberRef.current = 0n
         nextBlockNumberRef.current = 0n
         refreshed.current = true
-        blockRange.current = 0n
         setIsLoading(false)
         setIsMore(true)
         console.log("refreshed")
-    }, [caipNetworkId, publicClient, address])
+    }, [])
     useEffect(() => {
         if (isMore) {
             setTimeout(() => {
@@ -118,7 +98,7 @@ export const TransferEventList = () => {
     }, [isMore])
     useEffect(() => {
         refresh()
-    }, [caipNetworkId])
+    }, [caipNetworkId, refresh])
     return (
         <>
             {(!publicClient || !address) && (
@@ -128,7 +108,7 @@ export const TransferEventList = () => {
             )}
             {publicClient && address && (
                 <>
-                    <Button variant="outline" size="sm" onClick={() => refresh()} className="self-start">Refresh</Button>
+                    <Button variant="outline" size="sm" onClick={() => refresh()} className="self-start">更新</Button>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -162,7 +142,7 @@ export const TransferEventList = () => {
                         )}
                         {!isMore && (
                             <div className="p-4">
-                                <Button variant="outline" size="sm" onClick={() => { setIsMore(true) }}>More</Button>
+                                <Button variant="outline" size="sm" onClick={() => { setIsMore(true) }}>もっと見る</Button>
                             </div>
                         )}
                     </div>

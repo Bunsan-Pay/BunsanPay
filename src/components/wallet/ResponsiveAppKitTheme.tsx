@@ -8,6 +8,6 @@ export const ResponsiveAppKitTheme = () => {
     const { setThemeMode } = useAppKitTheme()
     useEffect(() => {
         setThemeMode(theme)
-    }, [theme])
+    }, [theme, setThemeMode])
     return null
 }

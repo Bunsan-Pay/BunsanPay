@@ -4,7 +4,7 @@ import { useCallback } from "react"
 export const TabModule = ({ defaultValue, triggers, contents }: { defaultValue: string, triggers: React.ReactNode, contents: React.ReactNode }) => {
     const contentBuffer = useCallback(() => {
         return contents
-    }, [])
+    }, [contents])
     return (
         <Tabs defaultValue={defaultValue} className="pt-4 items-center">
             <TabsList>

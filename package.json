@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:static": "echo 'http://localhost:8080' && bunx http-server ./out",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
@@ -17,6 +20,7 @@
     "@reown/appkit": "1.8.15",
     "@reown/appkit-adapter-wagmi": "1.8.15",
     "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-query": "^5.59.20",
     "abitype": "^1.2.3",
     "class-variance-authority": "^0.7.1",
@@ -28,8 +32,13 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-intersection-observer": "^10.0.0",
+    "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18",
+    "vaul": "^1.1.2",
     "viem": "^2.31.3",
     "wagmi": "^2.12.31"
   },

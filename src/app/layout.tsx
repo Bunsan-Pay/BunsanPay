@@ -29,8 +29,10 @@ export default function RootLayout({
         <meta name="description" content="JPYCを活用した日本のブロックチェーン決済や利用を促進するためのwebアプリ" />
         <meta name="theme-color" content="#000000" />
         <meta name="msapplication-TileColor" content="#000000" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+        <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
+        <link rel="manifest" href="/manifest.json" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>

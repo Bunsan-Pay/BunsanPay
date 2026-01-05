@@ -24,7 +24,16 @@ export const modal = createAppKit({
   networks,
   metadata,
   themeMode: 'light',
+  featuredWalletIds: [
+    '38633830ef578a1249c345848a8d6487551a346b923d21ce197ea57f423f3113',
+    'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96',
+    'a797aa35c0fadbfc1a53e7f675162ed5226968b44a19ee3d24385c64d1d3c393',
+    'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa'
+  ],
   features: {
+    swaps: false,
+    onramp: false,
+    send: false,
     analytics: true // Optional - defaults to your Cloud configuration
   },
   themeVariables: {

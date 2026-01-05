@@ -13,7 +13,7 @@ export function ConnectButton() {
   const [shrinkAddress, setShrinkAddress] = useState(address)
   useEffect(() => {
     close()
-  }, [caipNetworkId])
+  }, [caipNetworkId, close])
   useEffect(() => {
     if (address) {
       setShrinkAddress(address.slice(0, 6) + "..." + address.slice(-4))

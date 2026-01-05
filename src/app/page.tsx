@@ -15,16 +15,16 @@ export default function Home() {
       <main className="p-4 min-w-0">
         <JpycNetworks />
         <TabModule
-          defaultValue="home"
+          defaultValue="balance"
           triggers={
             <>
-              <TabsTrigger value="home">Home</TabsTrigger>
+              <TabsTrigger value="balance">残高</TabsTrigger>
               <TabsTrigger value="receiveHistory">受取履歴</TabsTrigger>
             </>
           }
           contents={
             <>
-              <TabsContent forceMount={true} className="w-full flex justify-center" value="home">
+              <TabsContent forceMount={true} className="w-full flex justify-center" value="balance">
                 <WalletInfo />
               </TabsContent>
               <TabsContent forceMount={true} className="w-full self-stretch min-w-0" value="receiveHistory">
