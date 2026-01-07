@@ -22,7 +22,7 @@ export default function JpycAddressProvider({ children }: { children: React.Reac
 
     useEffect(() => {
         changeAddress(caipNetworkId)
-    }, [caipNetworkId])
+    }, [caipNetworkId, changeAddress])
 
     return (
         <JpycAddressContext value={address}>

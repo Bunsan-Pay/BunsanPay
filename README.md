@@ -5,6 +5,8 @@ v0.0.1
 ## Features
 >- [x] 実装済み
 >- [ ] 実装予定・構想中  
+- [x] 残高確認  
+ネイティブトークンとJPYCそれぞれの残高を確認できます。
 - [x] JPYC受取確認  
 通常のウォレットより安全性の高い受取確認機能です。
     - 正規トークンアドレスでフィルタリング
@@ -23,6 +25,10 @@ v0.0.1
         - [ ] リンクからメッセージ送信・オンチェーン検証
         - [ ] メッセージ履歴をフィルタリングして表示
         - [ ] サーバー用APIライブラリ
+    - [ ] ガスレス決済  
+    ガス代を意識せず決済できる機能です。  
+    JPYCで手数料を徴収し肩代わりするので、ユーザビリティが向上します。
+    
 
 ## Supported Network
 
@@ -31,9 +37,4 @@ v0.0.1
 - Avalanche
 - Sepolia
 
-
-## Resources
-
-- [Reown — Docs](https://docs.reown.com)
-- [Vite — GitHub](https://github.com/vitejs/vite)
-- [Vite — Docs](https://vitejs.dev/guide/)
+<small>JPYCの対応状況によって追加される可能性があります。</small>

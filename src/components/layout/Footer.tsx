@@ -14,9 +14,18 @@ const Footer = () => {
                     </div>
                 </Link>
 
-                <div className='flex items-center gap-5 whitespace-nowrap'>
+                <div className='flex items-center gap-5 whitespace-nowrap text-xs sm:text-sm md:text-base'>
                     <Link href="/about" className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
                         About
+                    </Link>
+                    <Link href="/terms" className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
+                        Terms
+                    </Link>
+                    <Link href="/privacy-policy" className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
+                        Privacy Policy
+                    </Link>
+                    <Link href="/sctl" className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
+                        特定商取引法に基づく表記
                     </Link>
                 </div>
 
