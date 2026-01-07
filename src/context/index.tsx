@@ -31,6 +31,7 @@ export const modal = createAppKit({
     'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa'
   ],
   features: {
+    connectMethodsOrder: ["wallet", "social", "email"],
     swaps: false,
     onramp: false,
     send: false,
@@ -38,6 +39,7 @@ export const modal = createAppKit({
   },
   themeVariables: {
     '--w3m-accent': '#000000',
+    "--apkt-font-family": "Inter"
   }
 })
 

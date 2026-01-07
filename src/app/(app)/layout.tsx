@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/ui-own/theme-provider"
 import { Inter, Noto_Sans_JP } from "next/font/google"
 
 
-import './globals.css';
+import '../globals.css';
 import ContextProvider from '@/context'
 import JpycAddressProvider from "@/context/jpyc-address";
 import { ResponsiveAppKitTheme } from "@/components/wallet/ResponsiveAppKitTheme";

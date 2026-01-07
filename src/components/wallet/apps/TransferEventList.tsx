@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useJpycAddress } from "@/context/jpyc-address";
+import { CopyButton } from "@/components/ui-own/clipboard";
 
 
 type Event = {
@@ -14,6 +15,7 @@ type Event = {
     timestamp: bigint,
     from: `0x${string}`,
     to: `0x${string}`,
+    txid: `0x${string}`,
     value: bigint
 }
 
@@ -64,6 +66,7 @@ export const TransferEventList = () => {
             const data = {
                 ...l.args,
                 timestamp: l.blockTimestamp,
+                txid: l.transactionHash,
                 blockNumber: l.blockNumber
             }
             console.log(data)
@@ -112,21 +115,27 @@ export const TransferEventList = () => {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[100px]">金額</TableHead>
+                                <TableHead className="w-25">金額</TableHead>
                                 <TableHead>送金確定時刻</TableHead>
                                 <TableHead>送金元アドレス</TableHead>
                                 <TableHead>送金先アドレス</TableHead>
-                                <TableHead>ブロックナンバー</TableHead>
+                                <TableHead>トランザクションID</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {events.map(e => (
-                                <TableRow key={e.blockNumber.toString()}>
+                                <TableRow key={e.txid}>
                                     <TableCell className="font-medium">{formatUnits(e.value, 18)} JPYC</TableCell>
                                     <TableCell>{new Date(Number(e.timestamp) * 1000).toLocaleString()}</TableCell>
-                                    <TableCell>{e.from}</TableCell>
-                                    <TableCell>{e.to}</TableCell>
-                                    <TableCell>{e.blockNumber}</TableCell>
+                                    <TableCell>
+                                        <CopyButton copyText={e.from} />
+                                    </TableCell>
+                                    <TableCell>
+                                        <CopyButton copyText={e.to} />
+                                    </TableCell>
+                                    <TableCell>
+                                        <CopyButton copyText={e.txid} />
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

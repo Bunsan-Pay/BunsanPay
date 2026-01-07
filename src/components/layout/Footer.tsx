@@ -14,7 +14,7 @@ const Footer = () => {
                     </div>
                 </Link>
 
-                <div className='flex items-center gap-5 whitespace-nowrap text-xs sm:text-sm md:text-base'>
+                <div className='flex flex-wrap justify-center items-center gap-5 whitespace-nowrap text-xs sm:text-sm md:text-base'>
                     <Link href="/about" className='opacity-80 transition-opacity duration-300 hover:opacity-100'>
                         About
                     </Link>
@@ -46,8 +46,9 @@ const Footer = () => {
                     </Link>. All Rights Reserved
                 </p>
                 <p className='text-center text-xs text-muted-foreground font-semibold text-balance px-2 py-2'>
-                    Portions © 2025 Reown, Inc. All Rights Reserved <a href='https://github.com/reown-com/appkit/blob/main/LICENSE.md' className='hover:underline font-normal opacity-80 transition-opacity duration-300 hover:opacity-100'>LICENSE</a>
+                    Portions © 2025 Reown, Inc. All Rights Reserved
                 </p>
+                <a href='/license' target='_blank' className='text-center text-xs text-muted-foreground text-balance px-2 py-2 hover:underline font-normal opacity-80 transition-opacity duration-300 hover:opacity-100'>LICENSE</a>
             </div>
         </footer>
     )
