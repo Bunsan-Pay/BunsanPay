@@ -1,0 +1,10 @@
+{
+    "$schema": "./node_modules/wrangler/config-schema.json",
+    "name": "my-spa",
+    "main": "src/wrangler.js",
+    "compatibility_date": "2025-01-01",
+    "assets": {
+        "directory": "./out",
+        "binding": "ASSETS"
+    }
+}
