@@ -1,6 +1,6 @@
 {
     "$schema": "./node_modules/wrangler/config-schema.json",
-    "name": "my-spa",
+    "name": "bunsan-pay",
     "main": "src/wrangler.js",
     "compatibility_date": "2025-01-01",
     "assets": {
