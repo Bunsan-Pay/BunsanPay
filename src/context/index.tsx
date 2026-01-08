@@ -13,7 +13,7 @@ const queryClient = new QueryClient()
 const metadata = {
   name: 'bunsan-pay',
   description: 'bunsan-pay',
-  url: 'https://bunsan-pay.workers.dev', // origin must match your domain & subdomain
+  url: 'https://bunsan-pay.tokinovino.workers.dev', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/253606622']
 }
 
