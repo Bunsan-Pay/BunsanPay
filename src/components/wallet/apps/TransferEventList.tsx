@@ -105,8 +105,8 @@ export const TransferEventList = () => {
     return (
         <>
             {(!publicClient || !address) && (
-                <div>
-                    <p>You must connect to a wallet</p>
+                <div className="flex justify-center">
+                    <p>ウォレットに接続してください。</p>
                 </div>
             )}
             {publicClient && address && (

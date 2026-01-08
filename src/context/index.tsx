@@ -13,8 +13,8 @@ const queryClient = new QueryClient()
 const metadata = {
   name: 'bunsan-pay',
   description: 'bunsan-pay',
-  url: 'https://vino-volare.github.io/bunsan-pay', // origin must match your domain & subdomain
-  icons: ['https://avatars.githubusercontent.com/u/179229932']
+  url: 'https://bunsan-pay.workers.dev', // origin must match your domain & subdomain
+  icons: ['https://avatars.githubusercontent.com/u/253606622']
 }
 
 // Create the modal

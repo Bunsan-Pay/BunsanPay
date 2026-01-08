@@ -2,13 +2,6 @@
 import { useState } from "react";
 import { Check, ClipboardIcon } from "lucide-react";
 
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
-
 interface Props extends React.ComponentProps<"button"> {
     copyText?: string;
 }
@@ -16,43 +9,32 @@ interface Props extends React.ComponentProps<"button"> {
 export const CopyButton = (props: Props) => {
     const { copyText = "", className, ...args } = props;
     const [isCopied, setCopied] = useState<boolean>(false);
-    const [open, setOpen] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
 
     const handleClick = async () => {
         setCopied(true);
         await global.navigator.clipboard.writeText(copyText);
         setTimeout(() => {
             setCopied(false);
-            setOpen(false);
         }, 2000);
     };
 
     return (
-        <TooltipProvider>
-            <Tooltip defaultOpen={false} open={open}>
-                <TooltipTrigger asChild>
-                    <button
-                        {...args}
-                        className={className}
-                        onClick={() => !isCopied && handleClick()}
-                        onMouseOver={() => setOpen(true)}
-                        onMouseLeave={() => setOpen(false)}
-                    >
-                        {copyText}
-                    </button>
-                </TooltipTrigger>
-                {open && (
-                    <TooltipContent className="">
-                        <div className="color-foreground dark:color-background py-0.5">
-                            {isCopied ? (
-                                <Check size={16} />
-                            ) : (
-                                <ClipboardIcon size={16} />
-                            )}
-                        </div>
-                    </TooltipContent>
-                )}
-            </Tooltip>
-        </TooltipProvider>
+        <button
+            {...args}
+            className={className + " relative"}
+            onClick={() => !isCopied && handleClick()}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {copyText}
+            {isHovered &&
+                (isCopied ?
+                    <Check size={16} className="absolute right-1 top-1/2 -translate-y-1/2 bg-background rounded-b-xs opacity-80" />
+                    :
+                    <ClipboardIcon size={16} className="absolute right-1 top-1/2 -translate-y-1/2 bg-background rounded-b-xs opacity-80" />
+                )
+            }
+        </button>
     );
 };
