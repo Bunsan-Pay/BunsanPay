@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "dev:static": "echo 'http://localhost:8080' && bunx http-server ./out",
+    "dev": "concurrently \"wrangler dev\" \"next dev\"",
+    "dev:static": "wrangler dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -26,6 +26,7 @@
     "abitype": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "hono": "^4.11.3",
     "lucide-react": "^0.562.0",
     "next": "15.3.8",
     "next-themes": "^0.4.6",
@@ -51,6 +52,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "license-checker": "^25.0.1",

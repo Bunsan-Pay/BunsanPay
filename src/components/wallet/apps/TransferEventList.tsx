@@ -1,107 +1,182 @@
 "use client"
 import { usePublicClient } from "wagmi";
-import { useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react";
-import { parseAbiItem, formatUnits } from "viem";
+import { CaipNetworkId, useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react";
+import { toHex, fromHex } from "viem";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useJpycAddress } from "@/context/jpyc-address";
 import { CopyButton } from "@/components/ui-own/clipboard";
+import { JpycTransferParams, JpycTransferResult } from "@/api/ApiParams";
+import { useInView } from 'react-intersection-observer'
+import { JpycNetworkGuard } from "@/lib/JpycAddress";
 
+// bug ページリロードするとtoBlockのブロックナンバーがおかしい 正常:0x98b7aa 異常:0x1708cb4
+type Network = 'eth-mainnet' | 'eth-sepolia' | 'polygon-mainnet' | 'avax-mainnet'
+
+const networkGuard = (network: CaipNetworkId | undefined): Network | null => {
+    if (!network) return null
+    switch (network) {
+        case 'eip155:1':
+            return 'eth-mainnet'
+        case 'eip155:11155111':
+            return 'eth-sepolia'
+        case 'eip155:137':
+            return 'polygon-mainnet'
+        case 'eip155:43114':
+            return 'avax-mainnet'
+        default:
+            return null
+    }
+}
 
 type Event = {
     blockNumber: bigint,
-    timestamp: bigint,
+    timestamp: number | string,
     from: `0x${string}`,
     to: `0x${string}`,
     txid: `0x${string}`,
-    value: bigint
+    value: number
 }
 
-
-const chunkSize = 2000n
-
 export const TransferEventList = () => {
+    const [ref, inView] = useInView({ triggerOnce: true })
     const [events, setEvents] = useState<Event[]>([])
-    const jpycAddress = useJpycAddress()
     const { address } = useAppKitAccount()
     const { caipNetworkId } = useAppKitNetwork()
-    const refreshed = useRef<boolean>(false)
-    const lastBlockNumberRef = useRef<bigint>(0n)
-    const nextBlockNumberRef = useRef<bigint>(0n)
+    const newestBlockNumberRef = useRef<bigint | null>(null)
+    const oldestBlockNumberRef = useRef<bigint | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isMore, setIsMore] = useState<boolean>(true)
     const publicClient = usePublicClient()
-    const { ref, inView } = useInView()
-
-
-    const fetch = useCallback(async () => {
-        if (!publicClient) return
-        setIsLoading(true)
-        if (refreshed.current) {
-            refreshed.current = false
-            const currentBlockNumber = await publicClient.getBlockNumber()
-            console.log(`fetched current block number: ${currentBlockNumber}`)
-            nextBlockNumberRef.current = currentBlockNumber
-            lastBlockNumberRef.current = currentBlockNumber
-        }
-
-        console.log(`initialized block number: ${nextBlockNumberRef.current}`)
-
-        const fromBlockNumber = nextBlockNumberRef.current - chunkSize
-        const toBlockNumber = nextBlockNumberRef.current
-        nextBlockNumberRef.current = fromBlockNumber
-        const logs = (await publicClient.getLogs({
-            address: jpycAddress,
-            event: parseAbiItem('event Transfer(address indexed from, address indexed to, uint256 value)'),
-            args: {
-                to: address as `0x${string}`
-            },
-            fromBlock: fromBlockNumber,
-            toBlock: toBlockNumber,
-            strict: true
-        })).map(l => {
-            if (!l.blockTimestamp) return null
-            const data = {
-                ...l.args,
-                timestamp: l.blockTimestamp,
-                txid: l.transactionHash,
-                blockNumber: l.blockNumber
-            }
-            console.log(data)
-            return data
-        }).filter(l => !!l).sort((a, b) => Number(b.blockNumber) - Number(a.blockNumber))
-        setEvents(prev => [...prev, ...logs])
-        console.log(`updated block number: ${nextBlockNumberRef.current}`)
-        setIsLoading(false)
-    }, [publicClient, jpycAddress, address])
-
-    useEffect(() => {
-        if (inView && !isLoading && isMore) {
-            fetch()
-        }
-    }, [inView, isLoading, isMore, fetch])
+    const timePerBlockRef = useRef<bigint>(0n)
 
     const refresh = useCallback(() => {
         setEvents([])
-        lastBlockNumberRef.current = 0n
-        nextBlockNumberRef.current = 0n
-        refreshed.current = true
+        newestBlockNumberRef.current = null
+        oldestBlockNumberRef.current = null
+        timePerBlockRef.current = 0n
         setIsLoading(false)
-        setIsMore(true)
         console.log("refreshed")
     }, [])
     useEffect(() => {
-        if (isMore) {
-            setTimeout(() => {
-                setIsMore(false)
-            }, 5000)
-        }
-    }, [isMore])
-    useEffect(() => {
         refresh()
     }, [caipNetworkId, refresh])
+
+    const estimateTimePerBlock = useCallback(async () => {
+        if (!publicClient) return
+        const currentBlock = await publicClient.getBlock()
+        const sampleBlock = await publicClient.getBlock({
+            blockNumber: currentBlock.number - 1000n
+        })
+        const timePerBlock = (currentBlock.timestamp - sampleBlock.timestamp) / 1000n
+        timePerBlockRef.current = timePerBlock
+    }, [publicClient])
+
+    const getTransferEvents = useCallback(async (fromBlock: bigint, toBlock: bigint) => {
+        setIsLoading(true)
+        if (!publicClient) {
+            setIsLoading(false)
+            return
+        }
+        const network = networkGuard(caipNetworkId)
+        if (!network) {
+            setIsLoading(false)
+            return
+        }
+        const reqBody: JpycTransferParams = {
+            fromBlock: toHex(fromBlock),
+            toBlock: toHex(toBlock),
+            toAddress: address as `0x${string}`,
+            contractAddresses: [JpycNetworkGuard(caipNetworkId) as `0x${string}`],
+            order: 'desc'
+        }
+        console.log('fetching...')
+        const response = await fetch(`/api/getJPYCTransfer/${network}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqBody)
+        })
+        if (!response.ok) {
+            const errorText = await response.text()
+            console.error(`Error: ${response.status} ${response.statusText}`, errorText)
+            setIsLoading(false)
+            return
+        } else {
+            const data = await response.json() as JpycTransferResult
+            console.log('fetched')
+            console.log(data)
+            const result: Event[] = []
+            if (data.transfers) {
+                for (let i = 0; i < data.transfers.length; i++) {
+                    const element = data.transfers[i];
+                    const blockNumber = fromHex(element.blockNum!, 'bigint')
+                    const timestamp = element.metadata && element.metadata.blockTimestamp ? element.metadata.blockTimestamp : Number((await publicClient.getBlock({ blockNumber })).timestamp) * 1000
+                    const res: Event = {
+                        blockNumber,
+                        timestamp,
+                        from: element.from!,
+                        to: element.to!,
+                        txid: element.hash!,
+                        value: element.value!
+                    }
+                    result.push(res)
+                }
+            }
+            setIsLoading(false)
+            return result
+        }
+    }, [publicClient, address, caipNetworkId])
+
+    const calcFromBlock = useCallback((toBlock: bigint, days: number = 7) => {
+        return toBlock - (BigInt(days * 24 * 60 * 60) / timePerBlockRef.current)
+    }, [])
+
+    const initBlockNumber = useCallback(async () => {
+        if (publicClient && (!newestBlockNumberRef.current || !oldestBlockNumberRef.current)) {
+            const blockNumber = await publicClient.getBlockNumber()
+            console.log('blockNumber', blockNumber)
+            newestBlockNumberRef.current = blockNumber
+            oldestBlockNumberRef.current = blockNumber
+        }
+    }, [publicClient])
+
+    const getOlderEvents = useCallback(async () => {
+        if (!publicClient) return
+        await initBlockNumber()
+        console.log('getOlderEvents', oldestBlockNumberRef.current)
+        if (!timePerBlockRef.current) {
+            await estimateTimePerBlock()
+        }
+        const toBlock = oldestBlockNumberRef.current!
+        const fromBlock = calcFromBlock(toBlock)
+        oldestBlockNumberRef.current = fromBlock
+        const events = await getTransferEvents(fromBlock, toBlock)
+        if (!events) return
+        setEvents((prev) => [...prev, ...events])
+    }, [publicClient, calcFromBlock, getTransferEvents])
+
+    const updateNewEvents = useCallback(async () => {
+        if (!publicClient) return
+        await initBlockNumber()
+        const toBlock = await publicClient.getBlockNumber()
+        if (!timePerBlockRef.current) {
+            await estimateTimePerBlock()
+        }
+        const fromBlock = newestBlockNumberRef.current!
+        newestBlockNumberRef.current = toBlock
+        const events = await getTransferEvents(fromBlock, toBlock)
+        if (!events) return
+        setEvents((prev) => [...events, ...prev])
+    }, [publicClient, getTransferEvents])
+
+    useEffect(() => {
+        if (publicClient && caipNetworkId && address && inView) {
+            getOlderEvents()
+        }
+    }, [publicClient, caipNetworkId, address, inView])
+
+
     return (
         <>
             {(!publicClient || !address) && (
@@ -111,7 +186,7 @@ export const TransferEventList = () => {
             )}
             {publicClient && address && (
                 <>
-                    <Button variant="outline" size="sm" onClick={() => refresh()} className="self-start">更新</Button>
+                    <Button variant="outline" size="sm" onClick={updateNewEvents} className="self-start">更新</Button>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -125,8 +200,8 @@ export const TransferEventList = () => {
                         <TableBody>
                             {events.map(e => (
                                 <TableRow key={e.txid}>
-                                    <TableCell className="font-medium">{formatUnits(e.value, 18)} JPYC</TableCell>
-                                    <TableCell>{new Date(Number(e.timestamp) * 1000).toLocaleString()}</TableCell>
+                                    <TableCell className="font-medium">{e.value} JPYC</TableCell>
+                                    <TableCell>{new Date(e.timestamp).toLocaleString()}</TableCell>
                                     <TableCell>
                                         <CopyButton copyText={e.from} />
                                     </TableCell>
@@ -141,17 +216,18 @@ export const TransferEventList = () => {
                         </TableBody>
                     </Table>
                     <div className="flex justify-center">
-                        {isMore && (
+                        {isLoading && (
                             <div>
-                                <div ref={ref} className="h-4 w-full" />
                                 <div className="p-4">
                                     <p>Loading...</p>
                                 </div>
                             </div>
                         )}
-                        {!isMore && (
+                        {!isLoading && (
                             <div className="p-4">
-                                <Button variant="outline" size="sm" onClick={() => { setIsMore(true) }}>もっと見る</Button>
+                                <div ref={ref} className="w-full">
+                                    <Button variant="outline" size="sm" onClick={getOlderEvents}>もっと見る</Button>
+                                </div>
                             </div>
                         )}
                     </div>

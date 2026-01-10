@@ -1,10 +1,9 @@
 'use client'
 
 import { useBalance, useReadContract } from "wagmi"
-import { useAppKitAccount } from "@reown/appkit/react"
+import { useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react"
 import { useCallback } from "react"
 import { erc20Abi, formatUnits } from "viem"
-import { useJpycAddress } from "@/context/jpyc-address"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 import {
@@ -25,10 +24,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Fuel, CircleQuestionMark } from "lucide-react"
 import { ResponsiveIcon } from "@/components/ui-own/responsive-icon"
+import { JpycNetworkGuard } from "@/lib/JpycAddress"
 
 export const WalletInfo = () => {
     const { address, isConnected } = useAppKitAccount()
-    const jpycAddress = useJpycAddress()
+    const { caipNetworkId } = useAppKitNetwork()
 
     const { data: nativeBalance, refetch: refetchNativeBalance } = useBalance({
         address: address as `0x${string}`,
@@ -38,7 +38,7 @@ export const WalletInfo = () => {
     })
     const { data: jpycBalance, refetch: refetchJPYCBalance } = useReadContract({
         abi: erc20Abi,
-        address: jpycAddress,
+        address: JpycNetworkGuard(caipNetworkId),
         functionName: 'balanceOf',
         args: address ? [address as `0x${string}`] : undefined,
         query: {
