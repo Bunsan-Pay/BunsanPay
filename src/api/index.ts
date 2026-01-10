@@ -32,6 +32,7 @@ const networkGuard = (network: string) => {
 
 app.post("/getJPYCTransfer/:network", async (c) => {
     const { ALCHEMY_API_KEY } = env<ApiEnv>(c)
+    if (!ALCHEMY_API_KEY) throw new HTTPException(500, { message: "ALCHEMY_API_KEY is not defined" })
     const network = networkGuard(c.req.param("network"))
     if (!network) throw new HTTPException(400, { message: "Invalid network" })
 
