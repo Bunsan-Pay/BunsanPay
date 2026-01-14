@@ -49,7 +49,7 @@ const Footer = () => {
                     {`© ${new Date().getFullYear()}`}{' '}
                     <Link href='/' className='hover:underline'>
                         ぶんさんPay
-                    </Link>. All Rights Reserved
+                    </Link>. — <a href='https://github.com/Bunsan-Pay/BunsanPay/blob/main/LICENSE' target='_blank' className='hover:underline font-normal opacity-80 transition-opacity duration-300 hover:opacity-100'>MIT License</a>
                 </p>
                 <p className='text-center text-xs text-muted-foreground font-semibold text-balance px-2 py-2'>
                     Portions © 2025 Reown, Inc. All Rights Reserved

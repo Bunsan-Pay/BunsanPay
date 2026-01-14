@@ -5,10 +5,13 @@ import { toHex, fromHex } from "viem";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { CopyButton } from "@/components/ui-own/clipboard";
 import { JpycTransferParams, JpycTransferResult } from "@/api/ApiParams";
 import { useInView } from 'react-intersection-observer'
 import { JpycNetworkGuard } from "@/lib/JpycAddress";
+import { Delete } from "lucide-react";
 
 // bug ページリロードするとtoBlockのブロックナンバーがおかしい 正常:0x98b7aa 異常:0x1708cb4
 type Network = 'eth-mainnet' | 'eth-sepolia' | 'polygon-mainnet' | 'avax-mainnet'
@@ -41,6 +44,7 @@ type Event = {
 export const TransferEventList = () => {
     const [ref, inView] = useInView({ triggerOnce: true })
     const [events, setEvents] = useState<Event[]>([])
+    const [fromAddress, setFromAddress] = useState<string>('')
     const { address } = useAppKitAccount()
     const { caipNetworkId } = useAppKitNetwork()
     const newestBlockNumberRef = useRef<bigint | null>(null)
@@ -186,7 +190,13 @@ export const TransferEventList = () => {
             )}
             {publicClient && address && (
                 <>
-                    <Button variant="outline" size="sm" onClick={updateNewEvents} className="self-start">更新</Button>
+                    <div className="flex items-center gap-6">
+                        <Button variant="outline" size="sm" onClick={updateNewEvents} className="self-start">更新</Button>
+                        <form className="flex items-center gap-2">
+                            <Input type="text" placeholder="送金元アドレス: 0x..." id="fromAddress" defaultValue={''} onChange={(e) => setFromAddress(e.target.value)} />
+                            <Button variant="outline" onClick={() => setFromAddress('')} type="reset" size="sm"><Delete /></Button>
+                        </form>
+                    </div>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -198,7 +208,10 @@ export const TransferEventList = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {events.map(e => (
+                            {events.filter(e => {
+                                if (fromAddress === '') return true
+                                return e.from === fromAddress
+                            }).map(e => (
                                 <TableRow key={e.txid}>
                                     <TableCell className="font-medium">{e.value} JPYC</TableCell>
                                     <TableCell>{new Date(e.timestamp).toLocaleString()}</TableCell>
@@ -215,7 +228,8 @@ export const TransferEventList = () => {
                             ))}
                         </TableBody>
                     </Table>
-                    <div className="flex justify-center">
+                    <div className="flex flex-col items-center">
+                        <div ref={ref} className="w-full" />
                         {isLoading && (
                             <div>
                                 <div className="p-4">
@@ -223,11 +237,9 @@ export const TransferEventList = () => {
                                 </div>
                             </div>
                         )}
-                        {!isLoading && (
+                        {!isLoading && oldestBlockNumberRef.current && (
                             <div className="p-4">
-                                <div ref={ref} className="w-full">
-                                    <Button variant="outline" size="sm" onClick={getOlderEvents}>もっと見る</Button>
-                                </div>
+                                <Button variant="outline" size="sm" onClick={getOlderEvents}>もっと見る</Button>
                             </div>
                         )}
                     </div>
