@@ -6,7 +6,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { CopyButton } from "@/components/ui-own/clipboard";
 import { JpycTransferParams, JpycTransferResult } from "@/api/ApiParams";
 import { useInView } from 'react-intersection-observer'
