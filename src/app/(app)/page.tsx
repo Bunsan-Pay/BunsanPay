@@ -6,13 +6,10 @@ import { JpycNetworks } from "@/components/wallet/JpycNetworks";
 import { PageScaffold } from "@/components/layout/scaffold";
 import dynamic from "next/dynamic";
 import { useAppKitAccount } from "@reown/appkit/react";
+import { WalletInfo } from "@/components/wallet/apps/WalletInfo";
 
 export default function Home() {
   const { isConnected } = useAppKitAccount()
-  const WalletInfo = dynamic(async () => {
-    const { WalletInfo } = await import("@/components/wallet/apps/WalletInfo")
-    return { default: WalletInfo }
-  }, { ssr: false })
   const TransferEventList = dynamic(async () => {
     const { TransferEventList } = await import("@/components/wallet/apps/TransferEventList")
     return { default: TransferEventList }

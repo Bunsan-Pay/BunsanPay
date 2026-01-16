@@ -17,9 +17,11 @@
 ## 第3条（外部サービスの利用）
 1. 本サービスは、ブロックチェーンウォレットとの接続等のために、Reown AppKit（旧WalletConnect関連サービス）等の外部サービスを利用しています。ユーザーは、これらの外部サービスの利用規約およびプライバシーポリシーに従うものとします。
    - Reown Privacy Policy: https://reown.com/privacy-policy
-2. 本サービスのインフラストラクチャおよびセキュリティ対策として、Cloudflare Workersを利用しています。
+2. 本サービスは、トランザクションの取得等のために、Alchemy等の外部サービスを利用しています。ユーザーは、これらの外部サービスの利用規約およびプライバシーポリシーに従うものとします。
+   - Alchemy Legal: https://legal.alchemy.com/
+3. 本サービスのインフラストラクチャおよびセキュリティ対策として、Cloudflare Workersを利用しています。
    - Cloudflare Privacy Policy: https://www.cloudflare.com/ja-jp/privacypolicy/
-3. 本サービスが利用するReown AppKit、wagmi 等のライブラリが内部的に利用するRPCプロバイダーやノードサービスにより、IPアドレス、ウォレットアドレス、トランザクション関連情報等が当該第三者に送信される場合があります。
+4. 本サービスが利用するReown AppKit、wagmi 等のライブラリが内部的に利用するRPCプロバイダーやノードサービスにより、IPアドレス、ウォレットアドレス、トランザクション関連情報等が当該第三者に送信される場合があります。
 これらの情報の取扱いについては、本サービスが管理または保証するものではありません。
 
 

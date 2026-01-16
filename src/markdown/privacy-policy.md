@@ -24,12 +24,17 @@
    - 運営会社: Reown
    - プライバシーポリシー: [https://reown.com/privacy-policy](https://reown.com/privacy-policy)
 
-2. **Cloudflare Workers**
+2. **Alchemy**
+   - 用途: トランザクションの取得等
+   - 運営会社: Alchemy
+   - プライバシーポリシー: [https://legal.alchemy.com/](https://legal.alchemy.com/)
+
+3. **Cloudflare Workers**
    - 用途: アプリケーションのホスティング、セキュリティ対策、配信
    - 運営会社: Cloudflare, Inc.
    - プライバシーポリシー: [https://www.cloudflare.com/ja-jp/privacypolicy/](https://www.cloudflare.com/ja-jp/privacypolicy/)
 
-3. 当社が直接取得・保存しない場合であっても、以下の情報が外部サービスまたはその内部依存先に送信される可能性があります。
+4. 当社が直接取得・保存しない場合であっても、以下の情報が外部サービスまたはその内部依存先に送信される可能性があります。
 
 - IPアドレス
 - ウォレットアドレス

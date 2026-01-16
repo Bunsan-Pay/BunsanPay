@@ -3,13 +3,9 @@ import { ModeToggle } from '@/components/ui-own/color-mode-toggle'
 import { ResponsiveIcon } from '../ui-own/responsive-icon'
 import Link from 'next/link'
 import { Separator } from '../ui/separator'
-import dynamic from 'next/dynamic'
+import { ConnectButton } from '../wallet/ConnectButton'
 
 export const Header = () => {
-    const ConnectButton = dynamic(async () => {
-        const { ConnectButton } = await import("@/components/wallet/ConnectButton")
-        return { default: ConnectButton }
-    }, { ssr: false })
     return (
         <div>
             <header className="flex items-center justify-between">
