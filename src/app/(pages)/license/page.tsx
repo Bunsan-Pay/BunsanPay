@@ -1,6 +1,8 @@
 import checker from 'license-checker';
 import fs from 'fs'
-import { Markdown } from "@/components/layout/markdown";
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(() => import("@/components/layout/markdown").then((mod) => mod.Markdown));
 
 type License = {
     licenses: string,

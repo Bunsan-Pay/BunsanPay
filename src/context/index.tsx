@@ -39,7 +39,7 @@ export const modal = createAppKit({
   },
   themeVariables: {
     '--w3m-accent': '#000000',
-    "--apkt-font-family": "Inter"
+    "--apkt-font-family": "sans-serif"
   }
 })
 

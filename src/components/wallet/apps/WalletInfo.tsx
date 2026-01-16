@@ -113,9 +113,6 @@ export const WalletInfo = () => {
                     </CardContent>
                 </Card>
             )}
-            {!isConnected && (
-                <p>ウォレットに接続してください。</p>
-            )}
         </>
     )
 }

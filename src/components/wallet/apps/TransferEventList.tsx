@@ -12,7 +12,6 @@ import { useInView } from 'react-intersection-observer'
 import { JpycNetworkGuard } from "@/lib/JpycAddress";
 import { Delete } from "lucide-react";
 
-// bug ページリロードするとtoBlockのブロックナンバーがおかしい 正常:0x98b7aa 異常:0x1708cb4
 type Network = 'eth-mainnet' | 'eth-sepolia' | 'polygon-mainnet' | 'avax-mainnet'
 
 const networkGuard = (network: CaipNetworkId | undefined): Network | null => {
@@ -182,11 +181,6 @@ export const TransferEventList = () => {
 
     return (
         <>
-            {(!publicClient || !address) && (
-                <div className="flex justify-center">
-                    <p>ウォレットに接続してください。</p>
-                </div>
-            )}
             {publicClient && address && (
                 <>
                     <div className="flex items-center gap-6">
