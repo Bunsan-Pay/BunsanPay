@@ -203,7 +203,7 @@ export const TransferEventList = () => {
                         <TableBody>
                             {events.filter(e => {
                                 if (fromAddress === '') return true
-                                return e.from === fromAddress
+                                return e.from.toLowerCase() === fromAddress.toLowerCase()
                             }).map(e => (
                                 <TableRow key={e.txid}>
                                     <TableCell className="font-medium">{e.value} JPYC</TableCell>

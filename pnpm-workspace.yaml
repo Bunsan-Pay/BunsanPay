@@ -1,11 +1,12 @@
 packages:
-  - '.'
+  - .
+
 onlyBuiltDependencies:
   - '@reown/appkit'
   - bufferutil
   - esbuild
+  - keccak
   - sharp
   - unrs-resolver
   - utf-8-validate
   - workerd
-  - msw

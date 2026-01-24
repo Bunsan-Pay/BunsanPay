@@ -1,6 +1,6 @@
 {
   "name": "bunsanpay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "concurrently \"wrangler dev\" \"next dev\"",
@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "hono": "^4.11.3",
+    "katex": "^0.16.27",
     "lucide-react": "^0.562.0",
     "next": "^15.5.9",
     "next-themes": "^0.4.6",
@@ -47,7 +48,7 @@
     "tailwindcss": "^4.1.18",
     "vaul": "^1.1.2",
     "viem": "^2.44.2",
-    "wagmi": "^3.3.2"
+    "wagmi": "^2"
   },
   "devDependencies": {
     "@types/license-checker": "^25.0.6",
